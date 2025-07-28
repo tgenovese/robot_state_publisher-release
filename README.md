@@ -1,3 +1,26 @@
+## robot_state_publisher (jazzy) - 3.3.3-4
+
+The packages in the `robot_state_publisher` repository were released into the `jazzy` distro by running `/usr/bin/bloom-release --rosdistro jazzy --override-release-repository-push-url git@github.com:tgenovese/robot_state_publisher-release.git robot_state_publisher` on `Mon, 28 Jul 2025 13:00:05 -0000`
+
+The `robot_state_publisher` package was released.
+
+Version of package(s) in repository `robot_state_publisher`:
+
+- upstream repository: https://github.com/ros/robot_state_publisher.git
+- release repository: https://github.com/tgenovese/robot_state_publisher-release.git
+- rosdistro version: `3.3.3-3`
+- old version: `3.3.3-3`
+- new version: `3.3.3-4`
+
+Versions of tools used:
+
+- bloom version: `0.13.0`
+- catkin_pkg version: `1.0.0`
+- rosdep version: `0.26.0`
+- rosdistro version: `1.0.1`
+- vcstools version: `0.1.42`
+
+
 ## robot_state_publisher (rolling) - 3.5.2-1
 
 The packages in the `robot_state_publisher` repository were released into the `rolling` distro by running `/usr/bin/bloom-release --rosdistro rolling --track rolling robot_state_publisher` on `Fri, 18 Jul 2025 09:04:11 -0000`
