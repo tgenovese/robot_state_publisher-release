@@ -51,7 +51,7 @@
 #include "rclcpp_components/register_node_macro.hpp"
 #include "sensor_msgs/msg/joint_state.hpp"
 #include "std_msgs/msg/string.hpp"
-#include "urdf/model.hpp"
+#include "urdf/model.h"
 
 namespace robot_state_publisher
 {
@@ -80,7 +80,38 @@ RobotStatePublisher::RobotStatePublisher(const rclcpp::NodeOptions & options)
   // get the XML
   std::string urdf_xml = this->declare_parameter("robot_description", std::string(""));
   if (urdf_xml.empty()) {
-    throw std::runtime_error("robot_description parameter must not be empty");
+    // If the robot_description is empty, we fall back to looking at the
+    // command-line arguments.  Since this is deprecated, we print a warning
+    // but continue on.
+    try {
+      if (options.arguments().size() > 1) {
+        RCLCPP_WARN(
+          get_logger(),
+          "No robot_description parameter, but command-line argument available."
+          "  Assuming argument is name of URDF file."
+          "  This backwards compatibility fallback will be removed in the future.");
+        std::ifstream in(options.arguments()[1], std::ios::in | std::ios::binary);
+        if (in) {
+          in.seekg(0, std::ios::end);
+          urdf_xml.resize(in.tellg());
+          in.seekg(0, std::ios::beg);
+          in.read(&urdf_xml[0], urdf_xml.size());
+          in.close();
+
+          this->set_parameter(rclcpp::Parameter("robot_description", urdf_xml));
+        } else {
+          throw std::system_error(
+                  errno,
+                  std::system_category(),
+                  "Failed to open URDF file: " + std::string(options.arguments()[1]));
+        }
+      } else {
+        throw std::runtime_error("robot_description parameter must not be empty");
+      }
+    } catch (const std::runtime_error & err) {
+      RCLCPP_FATAL(get_logger(), "%s", err.what());
+      throw;
+    }
   }
 
   // set publish frequency
@@ -203,13 +234,13 @@ void RobotStatePublisher::addChildren(
           get_logger(), "Floating joint is not supported; skipping segment from %s to %s.",
           root.c_str(), child.getName().c_str());
       } else {
-        segments_fixed_.emplace(child.getJoint().getName(), s);
+        segments_fixed_.insert(make_pair(child.getJoint().getName(), s));
         RCLCPP_DEBUG(
           get_logger(), "Adding fixed segment from %s to %s", root.c_str(),
           child.getName().c_str());
       }
     } else {
-      segments_.emplace(child.getJoint().getName(), s);
+      segments_.insert(make_pair(child.getJoint().getName(), s));
       RCLCPP_DEBUG(
         get_logger(), "Adding moving segment from %s to %s", root.c_str(),
         child.getName().c_str());
@@ -311,14 +342,14 @@ void RobotStatePublisher::callbackJointState(
     // get joint positions from state message
     std::map<std::string, double> joint_positions;
     for (size_t i = 0; i < state->name.size(); i++) {
-      joint_positions.emplace(state->name[i], state->position[i]);
+      joint_positions.insert(std::make_pair(state->name[i], state->position[i]));
     }
 
     for (const std::pair<const std::string, urdf::JointMimicSharedPtr> & i : mimic_) {
       if (joint_positions.find(i.second->joint_name) != joint_positions.end()) {
         double pos = joint_positions[i.second->joint_name] * i.second->multiplier +
           i.second->offset;
-        joint_positions.emplace(i.first, pos);
+        joint_positions.insert(std::make_pair(i.first, pos));
       }
     }
 

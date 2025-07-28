@@ -2,33 +2,6 @@
 Changelog for package robot_state_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-3.5.2 (2025-07-18)
-------------------
-* Replace deprecated tf2_ros headers (`#235 <https://github.com/ros/robot_state_publisher/issues/235>`_)
-* Contributors: Alejandro Hernández Cordero
-
-3.5.1 (2025-05-19)
-------------------
-* Removed deprecated command-line argument (`#233 <https://github.com/ros/robot_state_publisher/issues/233>`_)
-* Contributors: Alejandro Hernández Cordero
-
-3.5.0 (2025-04-25)
-------------------
-
-3.4.2 (2024-12-20)
-------------------
-* Use `emplace()` with `std::map`s (`#231 <https://github.com/ros/robot_state_publisher/issues/231>`_)
-* Remove CODEOWNERS and mirror-rolling-to-main workflow (`#229 <https://github.com/ros/robot_state_publisher/issues/229>`_)
-* Contributors: Alejandro Hernández Cordero, Patrick Roncagliolo
-
-3.4.1 (2024-08-28)
-------------------
-* update urdf model header (`#223 <https://github.com/ros/robot_state_publisher/issues/223>`_)
-* Contributors: Alejandro Hernández Cordero
-
-3.4.0 (2024-04-26)
-------------------
-
 3.3.3 (2024-01-24)
 ------------------
 * Fix reload after a description with a mimic joint (`#212 <https://github.com/ros/robot_state_publisher/issues/212>`_)

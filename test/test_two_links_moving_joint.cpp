@@ -41,8 +41,8 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/joint_state.hpp"
-#include "tf2_ros/buffer.hpp"
-#include "tf2_ros/transform_listener.hpp"
+#include "tf2_ros/buffer.h"
+#include "tf2_ros/transform_listener.h"
 
 static constexpr double EPS = 0.01;
 
